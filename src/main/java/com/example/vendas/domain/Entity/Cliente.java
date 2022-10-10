@@ -1,10 +1,13 @@
 package com.example.vendas.domain.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.util.Lazy;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "CLIENTE")
+@Table(name = "cliente")
 public class Cliente {
 
     public Cliente() {
@@ -21,12 +24,16 @@ public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ID")
+    @Column(name = "id")
     private Integer id;
-    @Column(name = "NOME", length = 100)
+    @Column(name = "nome", length = 100)
     private String nome;
 
-    @OneToMany(mappedBy = "CLIENTE")
+    @Column(name = "cpf", length = 11)
+    private String cpf;
+
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Pedido> pedidos;
 
     public Set<Pedido> getPedidos() {
@@ -51,6 +58,14 @@ public class Cliente {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
     }
 
     @Override
