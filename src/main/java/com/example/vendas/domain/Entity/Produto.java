@@ -1,9 +1,12 @@
 package com.example.vendas.domain.Entity;
 
+import lombok.*;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Data @NoArgsConstructor @AllArgsConstructor
 @Table(name = "PRODUTO")
 public class Produto {
 
@@ -16,31 +19,5 @@ public class Produto {
     private String descricao;
     @Column(name = "PRECO_UNITARIO")
     private BigDecimal preco;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public BigDecimal getPreco() {
-        return preco;
-    }
-
-    public void setPreco(BigDecimal preco) {
-        this.preco = preco;
-    }
-
-
 
 }

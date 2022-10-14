@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController //Bota @ResponseBody em todas as funções
-@RequestMapping(name = "/api/clientes")
+@RequestMapping("/api/clientes")
 public class ClienteController {
 
     private Clientes clientes;
@@ -21,8 +21,8 @@ public class ClienteController {
         this.clientes = clientes;
     }
 
-    @GetMapping(value = "{id}")
-    public Cliente getClienteById(@PathVariable("id") Integer id){
+    @GetMapping("{id}")
+    public Cliente getClienteById(@PathVariable("id") Integer id){//@PathVariable indica que a variável vem na URL
         return clientes.findById(id).
                 orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND,
