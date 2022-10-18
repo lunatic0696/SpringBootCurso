@@ -1,5 +1,6 @@
 package com.example.vendas.domain.Entity;
 
+import com.example.vendas.domain.Enums.StatusPedido;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,6 +29,10 @@ public class Pedido {
 
     @Column(name = "total", scale = 2, precision = 20)
     private BigDecimal total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private StatusPedido status;
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;

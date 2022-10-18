@@ -4,10 +4,12 @@ import com.example.vendas.domain.Entity.Cliente;
 import com.example.vendas.domain.Entity.ItemPedido;
 import com.example.vendas.domain.Entity.Pedido;
 import com.example.vendas.domain.Entity.Produto;
+import com.example.vendas.domain.Enums.StatusPedido;
 import com.example.vendas.domain.Repository.Clientes;
 import com.example.vendas.domain.Repository.ItensPedido;
 import com.example.vendas.domain.Repository.Pedidos;
 import com.example.vendas.domain.Repository.Produtos;
+import com.example.vendas.exception.PedidoNaoEncontradoException;
 import com.example.vendas.exception.RegraNegocioException;
 import com.example.vendas.rest.dto.ItemPedidoDTO;
 import com.example.vendas.rest.dto.PedidoDTO;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,12 +43,27 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
+        pedido.setStatus(StatusPedido.REALIZADO);
 
         List<ItemPedido> itensPedido = converterItems(pedido, dto.getItens());
         repository.save(pedido);
         itensPedidoRepository.saveAll(itensPedido);
         pedido.setItens(itensPedido);
         return pedido;
+    }
+
+    @Override
+    public Optional<Pedido> obterPedidoCompleto(Integer id) {
+        return repository.findByIdFetchItens(id);
+    }
+
+    @Override
+    @Transactional
+    public void atualizaStatus(Integer id, StatusPedido statusPedido) {
+        repository.findById(id).map(pedido -> {
+            pedido.setStatus(statusPedido);
+            return repository.save(pedido);
+        }).orElseThrow(()-> new PedidoNaoEncontradoException());
     }
 
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
