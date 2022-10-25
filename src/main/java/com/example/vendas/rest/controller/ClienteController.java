@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -32,7 +33,7 @@ public class ClienteController {
     @PostMapping
     //@ResponseBody // Serve pra indicar que o objeto da response deve ser mapeado para um objeto do domínio
     @ResponseStatus(HttpStatus.CREATED) //Permite escolher o código de status que retorna
-    public Cliente save(@RequestBody Cliente cliente){ //@RequestBody serve pra indicar alterações no objeto do domínio
+    public Cliente save(@RequestBody @Valid Cliente cliente){ //@RequestBody serve pra indicar alterações no objeto do domínio
         return clientes.save(cliente);
     }
 
@@ -49,7 +50,7 @@ public class ClienteController {
     }
 
     @PutMapping("{id}")
-    public void update(@PathVariable("id") Integer id, @RequestBody Cliente cliente){
+    public void update(@PathVariable("id") Integer id, @RequestBody @Valid Cliente cliente){
         clientes
                 .findById(id)
                 .map(clienteExistente -> {

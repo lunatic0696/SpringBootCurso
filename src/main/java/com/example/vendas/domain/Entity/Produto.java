@@ -3,6 +3,8 @@ package com.example.vendas.domain.Entity;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Entity
@@ -16,8 +18,10 @@ public class Produto {
     private Integer id;
 
     @Column(name = "DESCRICAO")
+    @NotEmpty(message = "{campo.descricao.obrigatorio}")
     private String descricao;
     @Column(name = "PRECO_UNITARIO")
+    @NotNull(message = "{campo.preco.obrigatorio}")
     private BigDecimal preco;
 
 }
