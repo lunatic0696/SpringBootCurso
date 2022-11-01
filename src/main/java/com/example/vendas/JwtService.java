@@ -21,7 +21,7 @@ public class JwtService {
 
     @Value("${security.jwt.expiracao}")
     private String expiracao;
-    @Value("${security.jwt.chave-assinatura")
+    @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
     public String gerarToken(Usuario usuario) {
@@ -50,6 +50,7 @@ public class JwtService {
         try {
             Claims claims = obterClaims(token);
             Date dataExpiracao = claims.getExpiration();
+            System.out.println("data expiracao" + dataExpiracao);
             LocalDateTime data =
                     dataExpiracao.toInstant()
                             .atZone(ZoneId.systemDefault()).toLocalDateTime(); //Converter Date para LocalDateTime
